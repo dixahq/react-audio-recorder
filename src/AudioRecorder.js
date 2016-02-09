@@ -212,14 +212,14 @@ class AudioRecorder extends Component {
 
     if(this.props.download) {
       audioButtons.push(
-        <button type="button" key="download" className={downloadButtonClass.join(' ')} onClick={this.downloadAudio.bind(this)} dangerouslySetInnerHTML={{__html: strings.download}}>
+        <button type="button" id="download-button" key="download" className={downloadButtonClass.join(' ')} onClick={this.downloadAudio.bind(this)} dangerouslySetInnerHTML={{__html: strings.download}}>
         </button>
       );
     }
 
     if(this.props.onSave) {
       audioButtons.push(
-        <button type="button" key="save" className={downloadButtonClass.join(' ')} onClick={this.saveAudio.bind(this)} dangerouslySetInnerHTML={{__html: strings.save}}>
+        <button type="button" id="save-button" key="save" className={downloadButtonClass.join(' ')} onClick={this.saveAudio.bind(this)} dangerouslySetInnerHTML={{__html: strings.save}}>
         </button>
       );
     }
@@ -228,7 +228,7 @@ class AudioRecorder extends Component {
       <div className="AudioRecorder">
         <button type="button" className={buttonClass.join(' ')} onClick={clickHandler && clickHandler.bind(this)} dangerouslySetInnerHTML={{__html: buttonText}}>
         </button>
-        <button type="button" key="remove" className={removeButtonClass.join(' ')} onClick={this.removeAudio.bind(this)} dangerouslySetInnerHTML={{__html: strings.remove}}>
+        <button type="button" id="remove-button" key="remove" className={removeButtonClass.join(' ')} onClick={this.removeAudio.bind(this)} dangerouslySetInnerHTML={{__html: strings.remove}}>
         </button>
         {audioButtons}
       </div>

@@ -249,18 +249,18 @@ var AudioRecorder = (function (_Component) {
       audioButtons = [];
 
       if (this.props.download) {
-        audioButtons.push(_react2['default'].createElement('button', { type: 'button', key: 'download', className: downloadButtonClass.join(' '), onClick: this.downloadAudio.bind(this), dangerouslySetInnerHTML: { __html: strings.download } }));
+        audioButtons.push(_react2['default'].createElement('button', { type: 'button', id: 'download-button', key: 'download', className: downloadButtonClass.join(' '), onClick: this.downloadAudio.bind(this), dangerouslySetInnerHTML: { __html: strings.download } }));
       }
 
       if (this.props.onSave) {
-        audioButtons.push(_react2['default'].createElement('button', { type: 'button', key: 'save', className: downloadButtonClass.join(' '), onClick: this.saveAudio.bind(this), dangerouslySetInnerHTML: { __html: strings.save } }));
+        audioButtons.push(_react2['default'].createElement('button', { type: 'button', id: 'save-button', key: 'save', className: downloadButtonClass.join(' '), onClick: this.saveAudio.bind(this), dangerouslySetInnerHTML: { __html: strings.save } }));
       }
 
       return _react2['default'].createElement(
         'div',
         { className: 'AudioRecorder' },
         _react2['default'].createElement('button', { type: 'button', className: buttonClass.join(' '), onClick: clickHandler && clickHandler.bind(this), dangerouslySetInnerHTML: { __html: buttonText } }),
-        _react2['default'].createElement('button', { type: 'button', key: 'remove', className: removeButtonClass.join(' '), onClick: this.removeAudio.bind(this), dangerouslySetInnerHTML: { __html: strings.remove } }),
+        _react2['default'].createElement('button', { type: 'button', id: 'remove-button', key: 'remove', className: removeButtonClass.join(' '), onClick: this.removeAudio.bind(this), dangerouslySetInnerHTML: { __html: strings.remove } }),
         audioButtons
       );
     }
