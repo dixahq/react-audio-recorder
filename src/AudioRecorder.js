@@ -137,7 +137,13 @@ class AudioRecorder extends Component {
     const url = (window.URL || window.webkitURL).createObjectURL(this.state.audio);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'output.wav';
+
+    if(this.props.downloadFile) {
+      link.download = this.props.downloadFile;
+    } else {
+      link.download = 'output.wav';
+    }
+    
     const click = document.createEvent('Event');
     click.initEvent('click', true, true);
     link.dispatchEvent(click);
@@ -239,6 +245,7 @@ class AudioRecorder extends Component {
 AudioRecorder.PropTypes = {
   audio: PropTypes.instanceOf(Blob),
   download: PropTypes.bool,
+  downloadFile: PropTypes.string,
   loop: PropTypes.bool,
 
   onAbort: PropTypes.func,

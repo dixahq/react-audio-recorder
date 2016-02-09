@@ -13,7 +13,8 @@ var App = React.createClass({
         <form>
           <AudioRecorder
             download= {true}
-            onSave= {this.onSave} />
+            onSave= {this.onSave}
+            downloadFile= 'test.wav' />
         </form>
       </div>
     );
