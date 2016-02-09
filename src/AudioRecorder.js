@@ -124,7 +124,7 @@ class AudioRecorder extends Component {
       }
 
       this.setState({
-        audio: null
+        audio: false
       });
 
       if(this.props.onChange) {
@@ -178,8 +178,13 @@ class AudioRecorder extends Component {
     let downloadButtonClass = ['AudioRecorder-download'];
     let removeButtonClass = ['AudioRecorder-remove'];
 
+    console.log(this.state.audio);
+
     if(this.state.audio) {
       buttonClass.push('hasAudio');
+
+      downloadButtonClass.splice(downloadButtonClass.indexOf('disabled'),1);
+      removeButtonClass.splice(removeButtonClass.indexOf('disabled'),1);
 
       if(this.state.playing) {
         buttonClass.push('isPlaying');
@@ -189,11 +194,10 @@ class AudioRecorder extends Component {
         buttonText = strings.play;
         clickHandler = this.startPlayback;
       }
-
-      downloadButtonClass.splice(downloadButtonClass.indexOf('disabled'),1);
-      removeButtonClass.splice(removeButtonClass.indexOf('disabled'),1);
-
     } else {
+      downloadButtonClass.push('disabled');
+      removeButtonClass.push('disabled');
+
       if(this.state.recording) {
         buttonClass.push('isRecording');
         buttonText = strings.recording;
@@ -202,9 +206,6 @@ class AudioRecorder extends Component {
         buttonText = strings.record;
         clickHandler = this.startRecording;
       }
-
-      downloadButtonClass.push('disabled');
-      removeButtonClass.push('disabled');
     }
 
     audioButtons = [];
@@ -254,7 +255,8 @@ AudioRecorder.PropTypes = {
     record: PropTypes.string,
     recording: PropTypes.string,
     remove: PropTypes.string,
-    download: PropTypes.string
+    download: PropTypes.string,
+    save: PropTypes.string
   })
 };
 

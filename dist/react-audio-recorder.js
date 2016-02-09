@@ -156,7 +156,7 @@ var AudioRecorder = (function (_Component) {
         }
 
         this.setState({
-          audio: null
+          audio: false
         });
 
         if (this.props.onChange) {
@@ -216,8 +216,13 @@ var AudioRecorder = (function (_Component) {
       var downloadButtonClass = ['AudioRecorder-download'];
       var removeButtonClass = ['AudioRecorder-remove'];
 
+      console.log(this.state.audio);
+
       if (this.state.audio) {
         buttonClass.push('hasAudio');
+
+        downloadButtonClass.splice(downloadButtonClass.indexOf('disabled'), 1);
+        removeButtonClass.splice(removeButtonClass.indexOf('disabled'), 1);
 
         if (this.state.playing) {
           buttonClass.push('isPlaying');
@@ -227,10 +232,10 @@ var AudioRecorder = (function (_Component) {
           buttonText = strings.play;
           clickHandler = this.startPlayback;
         }
-
-        downloadButtonClass.splice(downloadButtonClass.indexOf('disabled'), 1);
-        removeButtonClass.splice(removeButtonClass.indexOf('disabled'), 1);
       } else {
+        downloadButtonClass.push('disabled');
+        removeButtonClass.push('disabled');
+
         if (this.state.recording) {
           buttonClass.push('isRecording');
           buttonText = strings.recording;
@@ -239,9 +244,6 @@ var AudioRecorder = (function (_Component) {
           buttonText = strings.record;
           clickHandler = this.startRecording;
         }
-
-        downloadButtonClass.push('disabled');
-        removeButtonClass.push('disabled');
       }
 
       audioButtons = [];
@@ -286,7 +288,8 @@ AudioRecorder.PropTypes = {
     record: _react.PropTypes.string,
     recording: _react.PropTypes.string,
     remove: _react.PropTypes.string,
-    download: _react.PropTypes.string
+    download: _react.PropTypes.string,
+    save: _react.PropTypes.string
   })
 };
 
