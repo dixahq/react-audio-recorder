@@ -1,3 +1,5 @@
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.AudioRecorder = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function (global){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -14,7 +16,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _react = require('react');
+var _react = (typeof window !== "undefined" ? window['React'] : typeof global !== "undefined" ? global['React'] : null);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -320,3 +322,78 @@ AudioRecorder.defaultProps = {
 
 exports['default'] = AudioRecorder;
 module.exports = exports['default'];
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./wav-encoder.js":2}],2:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+exports['default'] = encodeWAV;
+function writeUTFBytes(dataview, offset, string) {
+  for (var i = 0; i < string.length; i++) {
+    dataview.setUint8(offset + i, string.charCodeAt(i));
+  }
+}
+
+function mergeBuffers(buffer, length) {
+  var result = new Float64Array(length);
+  var offset = 0;
+  for (var i = 0; i < buffer.length; i++) {
+    var inner = buffer[i];
+    result.set(inner, offset);
+    offset += inner.length;
+  }
+  return result;
+}
+
+function interleave(left, right) {
+  var length = left.length + right.length;
+  var result = new Float64Array(length);
+  var inputIndex = 0;
+  for (var i = 0; i < length;) {
+    result[i++] = left[inputIndex];
+    result[i++] = right[inputIndex];
+    inputIndex++;
+  }
+  return result;
+}
+
+function encodeWAV(buffers, bufferLength, sampleRate) {
+  var volume = arguments.length <= 3 || arguments[3] === undefined ? 1 : arguments[3];
+
+  var left = mergeBuffers(buffers[0], bufferLength);
+  var right = mergeBuffers(buffers[1], bufferLength);
+  var interleaved = interleave(left, right);
+  var buffer = new ArrayBuffer(44 + interleaved.length * 2);
+  var view = new DataView(buffer);
+
+  writeUTFBytes(view, 0, 'RIFF');
+  view.setUint32(4, 44 + interleaved.length * 2, true);
+  writeUTFBytes(view, 8, 'WAVE');
+
+  writeUTFBytes(view, 12, 'fmt ');
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, 2, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * 4, true);
+  view.setUint16(32, 4, true);
+  view.setUint16(34, 16, true);
+
+  writeUTFBytes(view, 36, 'data');
+  view.setUint32(40, interleaved.length * 2, true);
+
+  interleaved.forEach(function (sample, index) {
+    view.setInt16(44 + index * 2, sample * (0x7fff * volume), true);
+  });
+
+  var audioData = new Blob([view], { type: 'audio/wav' });
+  return audioData;
+}
+
+module.exports = exports['default'];
+
+},{}]},{},[1])(1)
+});
