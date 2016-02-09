@@ -1,4 +1,4 @@
-/* 
+/*
 // Examples Stylesheet
 // -------------------
 */
@@ -57,7 +57,7 @@ label {
 }
 
 .AudioRecorder {
-  
+
   button {
     border: none;
     padding: 8px 12px;
@@ -80,4 +80,31 @@ label {
 
   .AudioRecorder-download {
 
+  }
+
+  .slider {
+    top: 10px;
+    &.disabled {
+      .bar, .bar-1, .bar-2, .handle {
+        background-color: #ddd;
+      }
+    }
+  }
+  .bar {
+    background-color: #ddd;
+    height: 5px;
+    top: 8px;
+    border-radius: 50px;
+  }
+  .bar-1 {
+    background-color: #798DAE;
+  }
+  .bar-2 {
+    background-color: #ddd;
+  }
+  .handle {
+    width: 20px;
+    height: 20px;
+    background-color: #798DAE;
+    border-radius: 25px;
   }

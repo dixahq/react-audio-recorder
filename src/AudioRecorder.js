@@ -50,6 +50,7 @@ class AudioRecorder extends Component {
     this.setState({
       recording: true
     });
+
     if(this.props.onRecordStart) {
       this.props.onRecordStart.call();
     }
@@ -60,9 +61,12 @@ class AudioRecorder extends Component {
 
     const audioData = encodeWAV(this.buffers, this.bufferLength, this.sampleRate);
 
+    console.log(audioData);
+
     this.setState({
       recording: false,
-      audio: audioData
+      audio: audioData,
+      duration: this.bufferLength / this.sampleRate
     });
 
     if(this.props.onChange) {
@@ -139,6 +143,12 @@ class AudioRecorder extends Component {
     link.dispatchEvent(click);
   }
 
+  saveAudio() {
+    if(this.props.onSave) {
+      this.props.onSave.call();
+    }
+  }
+
   onAudioEnded() {
     if(this.state.playing) {
       this.setState({ playing: false });
@@ -161,8 +171,13 @@ class AudioRecorder extends Component {
   render() {
     const strings = this.props.strings;
 
-    let buttonText, buttonClass = ['AudioRecorder-button'], audioButtons;
+    let buttonText, audioButtons;
     let clickHandler;
+
+    let buttonClass = ['AudioRecorder-button'];
+    let downloadButtonClass = ['AudioRecorder-download'];
+    let removeButtonClass = ['AudioRecorder-remove'];
+
     if(this.state.audio) {
       buttonClass.push('hasAudio');
 
@@ -175,15 +190,9 @@ class AudioRecorder extends Component {
         clickHandler = this.startPlayback;
       }
 
-      audioButtons = [
-        <button key="remove" className="AudioRecorder-remove" onClick={this.removeAudio.bind(this)}>{strings.remove}</button>
-      ];
+      downloadButtonClass.splice(downloadButtonClass.indexOf('disabled'),1);
+      removeButtonClass.splice(removeButtonClass.indexOf('disabled'),1);
 
-      if(this.props.download) {
-        audioButtons.push(
-          <button key="download" className="AudioRecorder-download" onClick={this.downloadAudio.bind(this)}>{strings.download}</button>
-        );
-      }
     } else {
       if(this.state.recording) {
         buttonClass.push('isRecording');
@@ -193,15 +202,36 @@ class AudioRecorder extends Component {
         buttonText = strings.record;
         clickHandler = this.startRecording;
       }
+
+      downloadButtonClass.push('disabled');
+      removeButtonClass.push('disabled');
+    }
+
+    audioButtons = [];
+
+    if(this.props.download) {
+      audioButtons.push(
+        <button type="button" key="download" className={downloadButtonClass.join(' ')} onClick={this.downloadAudio.bind(this)}>
+          {strings.download}
+        </button>
+      );
+    }
+
+    if(this.props.onSave) {
+      audioButtons.push(
+        <button type="button" key="save" className={downloadButtonClass.join(' ')} onClick={this.saveAudio.bind(this)}>
+          {strings.save}
+        </button>
+      );
     }
 
     return (
       <div className="AudioRecorder">
-        <button
-          className={buttonClass.join(' ')}
-          onClick={clickHandler && clickHandler.bind(this)}
-          >
+        <button type="button" className={buttonClass.join(' ')} onClick={clickHandler && clickHandler.bind(this)}>
           {buttonText}
+        </button>
+        <button type="button" key="remove" className={removeButtonClass.join(' ')} onClick={this.removeAudio.bind(this)}>
+          {strings.remove}
         </button>
         {audioButtons}
       </div>
@@ -209,7 +239,7 @@ class AudioRecorder extends Component {
   }
 }
 
-AudioRecorder.propTypes = {
+AudioRecorder.PropTypes = {
   audio: PropTypes.instanceOf(Blob),
   download: PropTypes.bool,
   loop: PropTypes.bool,
@@ -220,6 +250,7 @@ AudioRecorder.propTypes = {
   onPause: PropTypes.func,
   onPlay: PropTypes.func,
   onRecordStart: PropTypes.func,
+  onSave: PropTypes.func,
 
   strings: React.PropTypes.shape({
     play: PropTypes.string,
@@ -233,14 +264,15 @@ AudioRecorder.propTypes = {
 
 AudioRecorder.defaultProps = {
   loop: false,
-  
+
   strings: {
-    play: '🔊 Play',
-    playing: '❚❚ Playing',
-    record: '● Record',
-    recording: '● Recording',
-    remove: '✖ Remove',
-    download: '\ud83d\udcbe Save' // unicode floppy disk
+    play: 'Play',
+    playing: 'Pause',
+    record: 'Record',
+    recording: 'Recording',
+    remove: 'Remove',
+    save: 'Save',
+    download: 'Download'
   }
 };
 

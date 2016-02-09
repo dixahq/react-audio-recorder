@@ -3,10 +3,18 @@ var ReactDOM = require('react-dom');
 var AudioRecorder = require('react-audio-recorder');
 
 var App = React.createClass({
+  onSave: function() {
+    console.log('Save');
+  },
+
   render () {
     return (
       <div>
-        <AudioRecorder />
+        <form>
+          <AudioRecorder
+            download= {true}
+            onSave= {this.onSave} />
+        </form>
       </div>
     );
   }
