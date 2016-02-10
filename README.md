@@ -54,13 +54,13 @@ onPlay|callback|Called when playback begins.
 onRecordStart|callback|Called when recording begins.
  | |
 icons|object|Button icons
-icons.play|object|default: <span className="i-play s-icon" aria-hidden="true"></span>
-icons.playing|object|default: <span className="i-pause s-icon" aria-hidden="true"></span>
-icons.record|object|default: <span className="i-circle-full s-icon" aria-hidden="true"></span>
-icons.recording|object|default: <span className="i-circle-full s-icon blinking" aria-hidden="true"></span>
-icons.remove|object|default: <span className="i-delete s-icon" aria-hidden="true"></span>
-icons.save|obejct|default: <span className="i-upload s-icon" aria-hidden="true"></span>
-icons.download|object|default: <span className="i-download s-icon" aria-hidden="true"></span>
+icons.play|object|default: ```<span className="i-play s-icon" aria-hidden="true"></span>```
+icons.playing|object|default: ```<span className="i-pause s-icon" aria-hidden="true"></span>```
+icons.record|object|default: ```<span className="i-circle-full s-icon" aria-hidden="true"></span>```
+icons.recording|object|default: ```<span className="i-circle-full s-icon blinking" aria-hidden="true"></span>```
+icons.remove|object|default: ```<span className="i-delete s-icon" aria-hidden="true"></span>```
+icons.save|obejct|default: ```<span className="i-upload s-icon" aria-hidden="true"></span>```
+icons.download|object|default: ```<span className="i-download s-icon" aria-hidden="true"></span>```
 
 ### Notes
 
