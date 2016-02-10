@@ -46,20 +46,21 @@ prop|type|Description
 audio|Blob|Audio data to load the component with, optional.
 download|bool|Whether to show the download button after audio is recorded, default: true
 loop|bool|Whether to loop playback, default: false
- | | 
+ | |
 onAbort|callback|Called when playback is aborted.
 onChange|callback|Called when audio is recorded or removed. Callback data is sent as an object: `{ duration: float, data: Blob }`
 onEnded|callback|Called when playback finishes.
 onPlay|callback|Called when playback begins.
 onRecordStart|callback|Called when recording begins.
- | | 
-strings|object|Button text values
-strings.play|string|default: '🔊 Play'
-strings.playing|string|default: '❚❚ Playing'
-strings.record|string|default: '● Record'
-strings.recording|string|default: '● Recording'
-strings.remove|string|default: '✖ Remove'
-strings.download|string|default: '\ud83d\udcbe Save'
+ | |
+icons|object|Button icons
+icons.play|object|default: <span className="i-play s-icon" aria-hidden="true"></span>
+icons.playing|object|default: <span className="i-pause s-icon" aria-hidden="true"></span>
+icons.record|object|default: <span className="i-circle-full s-icon" aria-hidden="true"></span>
+icons.recording|object|default: <span className="i-circle-full s-icon blinking" aria-hidden="true"></span>
+icons.remove|object|default: <span className="i-delete s-icon" aria-hidden="true"></span>
+icons.save|obejct|default: <span className="i-upload s-icon" aria-hidden="true"></span>
+icons.download|object|default: <span className="i-download s-icon" aria-hidden="true"></span>
 
 ### Notes
 
@@ -81,4 +82,3 @@ To build, watch and serve the examples (which will also watch the component sour
 __PUT LICENSE HERE__
 
 Copyright (c) 2015 Dan Rouse.
-
