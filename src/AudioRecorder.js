@@ -143,7 +143,7 @@ class AudioRecorder extends Component {
     } else {
       link.download = 'output.wav';
     }
-    
+
     const click = document.createEvent('Event');
     click.initEvent('click', true, true);
     link.dispatchEvent(click);
@@ -175,9 +175,9 @@ class AudioRecorder extends Component {
   }
 
   render() {
-    const strings = this.props.strings;
+    const icons = this.props.icons;
 
-    let buttonText, audioButtons;
+    let buttonIcon, audioButtons;
     let clickHandler;
 
     let buttonClass = ['AudioRecorder-button'];
@@ -194,10 +194,10 @@ class AudioRecorder extends Component {
 
       if(this.state.playing) {
         buttonClass.push('isPlaying');
-        buttonText = strings.playing;
+        buttonIcon = icons.playing;
         clickHandler = this.stopPlayback;
       } else {
-        buttonText = strings.play;
+        buttonIcon = icons.play;
         clickHandler = this.startPlayback;
       }
     } else {
@@ -206,10 +206,10 @@ class AudioRecorder extends Component {
 
       if(this.state.recording) {
         buttonClass.push('isRecording');
-        buttonText = strings.recording;
+        buttonIcon = icons.recording;
         clickHandler = this.stopRecording;
       } else {
-        buttonText = strings.record;
+        buttonIcon = icons.record;
         clickHandler = this.startRecording;
       }
     }
@@ -218,23 +218,27 @@ class AudioRecorder extends Component {
 
     if(this.props.download) {
       audioButtons.push(
-        <button type="button" id="download-button" key="download" className={downloadButtonClass.join(' ')} onClick={this.downloadAudio.bind(this)} dangerouslySetInnerHTML={{__html: strings.download}}>
+        <button type="button" id="download-button" key="download" className={downloadButtonClass.join(' ')} onClick={this.downloadAudio.bind(this)} >
+          {icons.download}
         </button>
       );
     }
 
     if(this.props.onSave) {
       audioButtons.push(
-        <button type="button" id="save-button" key="save" className={downloadButtonClass.join(' ')} onClick={this.saveAudio.bind(this)} dangerouslySetInnerHTML={{__html: strings.save}}>
+        <button type="button" id="save-button" key="save" className={downloadButtonClass.join(' ')} onClick={this.saveAudio.bind(this)} >
+          {icons.save}
         </button>
       );
     }
 
     return (
       <div className="AudioRecorder">
-        <button type="button" className={buttonClass.join(' ')} onClick={clickHandler && clickHandler.bind(this)} dangerouslySetInnerHTML={{__html: buttonText}}>
+        <button type="button" className={buttonClass.join(' ')} onClick={clickHandler && clickHandler.bind(this)} >
+          {buttonIcon}
         </button>
-        <button type="button" id="remove-button" key="remove" className={removeButtonClass.join(' ')} onClick={this.removeAudio.bind(this)} dangerouslySetInnerHTML={{__html: strings.remove}}>
+        <button type="button" id="remove-button" key="remove" className={removeButtonClass.join(' ')} onClick={this.removeAudio.bind(this)} >
+          {icons.remove}
         </button>
         {audioButtons}
       </div>
@@ -256,28 +260,28 @@ AudioRecorder.PropTypes = {
   onRecordStart: PropTypes.func,
   onSave: PropTypes.func,
 
-  strings: React.PropTypes.shape({
-    play: PropTypes.string,
-    playing: PropTypes.string,
-    record: PropTypes.string,
-    recording: PropTypes.string,
-    remove: PropTypes.string,
-    download: PropTypes.string,
-    save: PropTypes.string
+  icons: React.PropTypes.shape({
+    play: PropTypes.object,
+    playing: PropTypes.object,
+    record: PropTypes.object,
+    recording: PropTypes.object,
+    remove: PropTypes.object,
+    download: PropTypes.object,
+    save: PropTypes.object
   })
 };
 
 AudioRecorder.defaultProps = {
   loop: false,
 
-  strings: {
-    play: 'Play',
-    playing: 'Pause',
-    record: 'Record',
-    recording: 'Recording',
-    remove: 'Remove',
-    save: 'Save',
-    download: 'Download'
+  icons: {
+    play: <span className="i-play s-icon" aria-hidden="true"></span>,
+    playing: <span className="i-pause s-icon" aria-hidden="true"></span>,
+    record: <span className="i-circle-full s-icon" aria-hidden="true"></span>,
+    recording: <span className="i-circle-full s-icon blinking" aria-hidden="true"></span>,
+    remove: <span className="i-delete s-icon" aria-hidden="true"></span>,
+    save: <span className="i-upload s-icon" aria-hidden="true"></span>,
+    download: <span className="i-download s-icon" aria-hidden="true"></span>
   }
 };
 

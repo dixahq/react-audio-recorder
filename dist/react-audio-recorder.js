@@ -170,7 +170,13 @@ var AudioRecorder = (function (_Component) {
       var url = (window.URL || window.webkitURL).createObjectURL(this.state.audio);
       var link = document.createElement('a');
       link.href = url;
-      link.download = 'output.wav';
+
+      if (this.props.downloadFile) {
+        link.download = this.props.downloadFile;
+      } else {
+        link.download = 'output.wav';
+      }
+
       var click = document.createEvent('Event');
       click.initEvent('click', true, true);
       link.dispatchEvent(click);
@@ -206,9 +212,9 @@ var AudioRecorder = (function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var strings = this.props.strings;
+      var icons = this.props.icons;
 
-      var buttonText = undefined,
+      var buttonIcon = undefined,
           audioButtons = undefined;
       var clickHandler = undefined;
 
@@ -226,10 +232,10 @@ var AudioRecorder = (function (_Component) {
 
         if (this.state.playing) {
           buttonClass.push('isPlaying');
-          buttonText = strings.playing;
+          buttonIcon = icons.playing;
           clickHandler = this.stopPlayback;
         } else {
-          buttonText = strings.play;
+          buttonIcon = icons.play;
           clickHandler = this.startPlayback;
         }
       } else {
@@ -238,10 +244,10 @@ var AudioRecorder = (function (_Component) {
 
         if (this.state.recording) {
           buttonClass.push('isRecording');
-          buttonText = strings.recording;
+          buttonIcon = icons.recording;
           clickHandler = this.stopRecording;
         } else {
-          buttonText = strings.record;
+          buttonIcon = icons.record;
           clickHandler = this.startRecording;
         }
       }
@@ -249,18 +255,34 @@ var AudioRecorder = (function (_Component) {
       audioButtons = [];
 
       if (this.props.download) {
-        audioButtons.push(_react2['default'].createElement('button', { type: 'button', id: 'download-button', key: 'download', className: downloadButtonClass.join(' '), onClick: this.downloadAudio.bind(this), dangerouslySetInnerHTML: { __html: strings.download } }));
+        audioButtons.push(_react2['default'].createElement(
+          'button',
+          { type: 'button', id: 'download-button', key: 'download', className: downloadButtonClass.join(' '), onClick: this.downloadAudio.bind(this) },
+          icons.download
+        ));
       }
 
       if (this.props.onSave) {
-        audioButtons.push(_react2['default'].createElement('button', { type: 'button', id: 'save-button', key: 'save', className: downloadButtonClass.join(' '), onClick: this.saveAudio.bind(this), dangerouslySetInnerHTML: { __html: strings.save } }));
+        audioButtons.push(_react2['default'].createElement(
+          'button',
+          { type: 'button', id: 'save-button', key: 'save', className: downloadButtonClass.join(' '), onClick: this.saveAudio.bind(this) },
+          icons.save
+        ));
       }
 
       return _react2['default'].createElement(
         'div',
         { className: 'AudioRecorder' },
-        _react2['default'].createElement('button', { type: 'button', className: buttonClass.join(' '), onClick: clickHandler && clickHandler.bind(this), dangerouslySetInnerHTML: { __html: buttonText } }),
-        _react2['default'].createElement('button', { type: 'button', id: 'remove-button', key: 'remove', className: removeButtonClass.join(' '), onClick: this.removeAudio.bind(this), dangerouslySetInnerHTML: { __html: strings.remove } }),
+        _react2['default'].createElement(
+          'button',
+          { type: 'button', className: buttonClass.join(' '), onClick: clickHandler && clickHandler.bind(this) },
+          buttonIcon
+        ),
+        _react2['default'].createElement(
+          'button',
+          { type: 'button', id: 'remove-button', key: 'remove', className: removeButtonClass.join(' '), onClick: this.removeAudio.bind(this) },
+          icons.remove
+        ),
         audioButtons
       );
     }
@@ -272,6 +294,7 @@ var AudioRecorder = (function (_Component) {
 AudioRecorder.PropTypes = {
   audio: _react.PropTypes.instanceOf(Blob),
   download: _react.PropTypes.bool,
+  downloadFile: _react.PropTypes.string,
   loop: _react.PropTypes.bool,
 
   onAbort: _react.PropTypes.func,
@@ -282,28 +305,28 @@ AudioRecorder.PropTypes = {
   onRecordStart: _react.PropTypes.func,
   onSave: _react.PropTypes.func,
 
-  strings: _react2['default'].PropTypes.shape({
-    play: _react.PropTypes.string,
-    playing: _react.PropTypes.string,
-    record: _react.PropTypes.string,
-    recording: _react.PropTypes.string,
-    remove: _react.PropTypes.string,
-    download: _react.PropTypes.string,
-    save: _react.PropTypes.string
+  icons: _react2['default'].PropTypes.shape({
+    play: _react.PropTypes.object,
+    playing: _react.PropTypes.object,
+    record: _react.PropTypes.object,
+    recording: _react.PropTypes.object,
+    remove: _react.PropTypes.object,
+    download: _react.PropTypes.object,
+    save: _react.PropTypes.object
   })
 };
 
 AudioRecorder.defaultProps = {
   loop: false,
 
-  strings: {
-    play: 'Play',
-    playing: 'Pause',
-    record: 'Record',
-    recording: 'Recording',
-    remove: 'Remove',
-    save: 'Save',
-    download: 'Download'
+  icons: {
+    play: _react2['default'].createElement('span', { className: 'i-play s-icon', 'aria-hidden': 'true' }),
+    playing: _react2['default'].createElement('span', { className: 'i-pause s-icon', 'aria-hidden': 'true' }),
+    record: _react2['default'].createElement('span', { className: 'i-circle-full s-icon', 'aria-hidden': 'true' }),
+    recording: _react2['default'].createElement('span', { className: 'i-circle-full s-icon blinking', 'aria-hidden': 'true' }),
+    remove: _react2['default'].createElement('span', { className: 'i-delete s-icon', 'aria-hidden': 'true' }),
+    save: _react2['default'].createElement('span', { className: 'i-upload s-icon', 'aria-hidden': 'true' }),
+    download: _react2['default'].createElement('span', { className: 'i-download s-icon', 'aria-hidden': 'true' })
   }
 };
 
