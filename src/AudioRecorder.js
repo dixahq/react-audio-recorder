@@ -60,9 +60,6 @@ class AudioRecorder extends Component {
     this.recordingStream.getTracks()[0].stop();
 
     const audioData = encodeWAV(this.buffers, this.bufferLength, this.sampleRate);
-
-    console.log(audioData);
-
     this.setState({
       recording: false,
       audio: audioData,
@@ -153,6 +150,7 @@ class AudioRecorder extends Component {
     if(this.props.onSave) {
       this.props.onSave.call();
     }
+    this.setState({audio: this.props.audio});
   }
 
   onAudioEnded() {
