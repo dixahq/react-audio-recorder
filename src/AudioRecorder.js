@@ -235,6 +235,7 @@ class AudioRecorder extends Component {
         <button type="button" className={buttonClass.join(' ')} onClick={clickHandler && clickHandler.bind(this)} >
           {buttonIcon}
         </button>
+        <p className="AudioRecorderInfoText">{this.props.text}</p>
         <button type="button" id="remove-button" key="remove" className={removeButtonClass.join(' ')} onClick={this.removeAudio.bind(this)} >
           {icons.remove}
         </button>
