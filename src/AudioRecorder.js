@@ -235,7 +235,7 @@ class AudioRecorder extends Component {
         <button type="button" className={buttonClass.join(' ')} onClick={clickHandler && clickHandler.bind(this)} >
           {buttonIcon}
         </button>
-        <span clasName="AudioRecorderInfoText">{this.props.text}</span>
+        <p clasName="AudioRecorderInfoText">{this.props.text}</p>
         <button type="button" id="remove-button" key="remove" className={removeButtonClass.join(' ')} onClick={this.removeAudio.bind(this)} >
           {icons.remove}
         </button>
@@ -249,6 +249,7 @@ AudioRecorder.PropTypes = {
   audio: PropTypes.instanceOf(Blob),
   download: PropTypes.bool,
   downloadFile: PropTypes.string,
+  text: PropTypes.string,
   loop: PropTypes.bool,
 
   onAbort: PropTypes.func,
