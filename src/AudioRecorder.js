@@ -150,7 +150,6 @@ class AudioRecorder extends Component {
     if(this.props.onSave) {
       this.props.onSave.call();
     }
-    this.setState({audio: this.props.audio});
   }
 
   onAudioEnded() {
@@ -182,8 +181,6 @@ class AudioRecorder extends Component {
     let downloadButtonClass = ['AudioRecorder-download'];
     let removeButtonClass = ['AudioRecorder-remove'];
 
-    console.log(this.state.audio);
-
     if(this.state.audio) {
       buttonClass.push('hasAudio');
 
@@ -213,14 +210,6 @@ class AudioRecorder extends Component {
     }
 
     audioButtons = [];
-
-    if(this.props.download) {
-      audioButtons.push(
-        <button type="button" id="download-button" key="download" className={downloadButtonClass.join(' ')} onClick={this.downloadAudio.bind(this)} >
-          {icons.download}
-        </button>
-      );
-    }
 
     if(this.props.onSave) {
       audioButtons.push(
