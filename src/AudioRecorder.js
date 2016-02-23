@@ -15,7 +15,8 @@ class AudioRecorder extends Component {
     this.state = {
       recording: false,
       playing: false,
-      audio: props.audio
+      audio: props.audio,
+      duration: 0
     };
   }
 
@@ -63,12 +64,16 @@ class AudioRecorder extends Component {
     this.setState({
       recording: false,
       audio: audioData,
-      duration: this.bufferLength / this.sampleRate
+      duration: this.bufferLength / this.sampleRate / 2
     });
+
+    console.log(this.buffers);
+
+    console.log(this.bufferLength / this.sampleRate / 2);
 
     if(this.props.onChange) {
       this.props.onChange.call(null, {
-        duration: this.bufferLength / this.sampleRate,
+        duration: this.bufferLength / this.sampleRate / 2,
         blob: audioData
       });
     }
