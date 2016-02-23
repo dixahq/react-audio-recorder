@@ -114,15 +114,19 @@ class AudioRecorder extends Component {
   }
 
   removeAudio() {
+    console.log(this);
     if(this.state.audio) {
-      if(this.playbackSource) {
-        this.playbackSource.stop();
-        delete this.playbackSource;
-      }
+      this.recordingStream = null;
+      this.playbackSource = null;
 
       this.setState({
-        audio: false
+        recording: false,
+        playing: false,
+        audio: false,
+        duration: 0
       });
+
+      this.buffers = [[], []];
 
       if(this.props.onChange) {
         this.props.onChange.call();
@@ -181,8 +185,6 @@ class AudioRecorder extends Component {
     let buttonClass = ['AudioRecorder-button'];
     let downloadButtonClass = ['AudioRecorder-download'];
     let removeButtonClass = ['AudioRecorder-remove'];
-
-    console.log(this.state.audio);
 
     if(this.state.audio) {
       buttonClass.push('hasAudio');
